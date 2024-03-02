@@ -1,33 +1,32 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
+const initialData = {
+  Name:"",
+  Age:"",
+  Country:"",
+  Charge:"",
+  Years:""
+}
 function App() {
-  const [count, setCount] = useState(0)
+  const [data,SetData] = useState(initialData)
 
+   const onHanldeChange = (e) =>{
+    SetData({...data,[e.target.name]:e.target.value})
+   }
+  
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="App">
+      <div className="data">
+        <label>Name:<input  name='Name' onChange={onHanldeChange} value={data.Name} type='text'></input></label>
+        <label>Age:<input name='Age' onChange={onHanldeChange} value={data.Age}  type='number'></input></label>
+        <label>Country:<input name='Country' onChange={onHanldeChange} value={data.Country}  type='text'></input></label>
+        <label>Charge:<input name='Charge' onChange={onHanldeChange} value={data.Charge}  type='text'></input></label>
+        <label>Years:<input name='Years' onChange={onHanldeChange} value={data.Years}  type='number'></input></label>
+        <button>to register</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    </div>
     </>
   )
 }
