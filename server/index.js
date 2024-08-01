@@ -21,7 +21,14 @@ app.post("/create",(req,res)=>{
     const Years= req.body.Years;
 
     db.query('INSERT INTO employe(name,age,country,charge,years) VALUES(?,?,?,?,?)',[
-        Name,Age,Country,Charge,Years]);
+        Name,Age,Country,Charge,Years],
+        (err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.send(result)
+            }
+        });
 });
 
 app.get("/employees",(req,res)=>{
@@ -43,13 +50,13 @@ app.put("/update",(req,res)=>{
     const Charge= req.body.Charge;
     const Years= req.body.Years;
 
-    db.query('UPDATE employe SET name=?,age=?,country=?,charge=?,years=? WHERE id=?' ,[
+    db.query('UPDATE employe SET name=?,age=?,country=?,charge=?,years=? WHERE employe_id=?' ,[
         Name,Age,Country,Charge,Years,employe_id],
         (err,result)=>{
             if(err){
                 console.log(err)
             }else{
-                res.send("Empleado actualizado con exito")
+                res.send(result)
             }
         });
 });

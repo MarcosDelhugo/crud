@@ -12,15 +12,16 @@ const initialData = {
   Years:""
 }
 function App() {
-  const [data,SetData] = useState(initialData);
+  const [data,setData] = useState(initialData);
   const [listEmployes,setListEmployes] = useState([]);
+  const [editemploye,setEditEmploye] = useState(false);
 
   useEffect(() => {
     fetchGet()
  }, [data])
 
   const onHanldeChange = (e) =>{
-    SetData({...data,[e.target.name]:e.target.value})
+    setData({...data,[e.target.name]:e.target.value})
   }
   
   const fetchAdd = async () => {
@@ -38,24 +39,65 @@ function App() {
       {
         const data = await httpRequest(
           { method: 'POST',headers:headers, service: 'create',payload:dataSend});
+          console.log(data)
       } 
       catch (error) {
         console.log(error);
       }
+    fetchGet();
+    clearFields();
   }
 
   const fetchGet = async () => {
     try 
     {
       const data = await httpRequest({ method: 'GET',service: 'employees'});
-      console.log(data)
       setListEmployes(data)
     } 
     catch (error) {
       console.log(error);
     }
   }
-  
+
+  const editEmploye = (e) => {
+    setEditEmploye(true);
+    setData({
+      "employe_id":e.employe_id,
+      "Age":e.age,
+      "Name":e.name,
+      "Country":e.country,
+      "Charge":e.charge,
+      "Years":e.years});
+  }
+const fetchUpdate= async () => {
+      let headers = {
+          Accept: '*/*', 
+      }
+      let dataSend ={
+        employe_id:data.employe_id,
+        Name:data.Name,
+        Age:data.Age,
+        Country:data.Country,
+        Charge:data.Charge,
+        Years:data.Years
+      }
+      try 
+      {
+        const res= await httpRequest(
+          { method: 'PUT',headers:headers, service: 'update',payload:dataSend});
+          console.log(res)
+          fetchGet();
+          clearFields();
+      } 
+      catch (error) {
+        console.log(error);
+      }
+  }
+
+  const clearFields =()=>{
+    setEditEmploye(false);
+    setData(initialData)
+  }
   return (
     <>
       <div className="container">
@@ -86,7 +128,14 @@ function App() {
             </div>
           </div>
           <div className="card-footer text-body-secondary">
-            <button className='btn btn-success' onClick={fetchAdd}>to register</button>
+            {
+              editemploye?
+              <div>
+              <button className='btn btn-warning m-2' onClick={fetchUpdate}>to update</button>
+              <button className='btn btn-info m-2' onClick={clearFields}>cancel</button>
+              </div>
+              :<button className='btn btn-success' onClick={fetchAdd}>to register</button>
+            }
           </div>
         </div>
         <table className="table table-striped">
@@ -113,7 +162,7 @@ function App() {
                         <td>{val.years}</td>
                         <td>
                           <div className="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" className="btn btn-info">Edit</button>
+                            <button type="button" className="btn btn-info" onClick={()=>{editEmploye(val)}}>Edit</button>
                             <button type="button" className="btn btn-danger">Delete</button>
                           </div></td>                  
                       </tr>
