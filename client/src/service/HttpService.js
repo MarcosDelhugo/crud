@@ -35,7 +35,7 @@ async function httpRequest({ method, service, headers, payload }) {
       })
       .catch((error) => reject(error));
   });
-};
+}
 
 export {
   httpRequest
