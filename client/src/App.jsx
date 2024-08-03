@@ -69,7 +69,7 @@ function App() {
       "Charge":e.charge,
       "Years":e.years});
   }
-const fetchUpdate= async () => {
+  const fetchUpdate= async () => {
       let headers = {
           Accept: '*/*', 
       }
@@ -94,6 +94,21 @@ const fetchUpdate= async () => {
       }
   }
 
+  const fetchDelete= async (e) => {
+    let headers = {
+        Accept: '*/*', 
+    }
+    try 
+    {
+      const res= await httpRequest(
+        { method: 'DELETE',headers:headers, service:`delete/${e.employe_id}`});
+        console.log(res)
+        fetchGet();
+    } 
+    catch (error) {
+      console.log(error);
+    } 
+}
   const clearFields =()=>{
     setEditEmploye(false);
     setData(initialData)
@@ -163,7 +178,7 @@ const fetchUpdate= async () => {
                         <td>
                           <div className="btn-group" role="group" aria-label="Basic example">
                             <button type="button" className="btn btn-info" onClick={()=>{editEmploye(val)}}>Edit</button>
-                            <button type="button" className="btn btn-danger">Delete</button>
+                            <button type="button" className="btn btn-danger" onClick={()=>{fetchDelete(val)}}>Delete</button>
                           </div></td>                  
                       </tr>
               })

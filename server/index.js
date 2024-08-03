@@ -61,6 +61,18 @@ app.put("/update",(req,res)=>{
         });
 });
 
+app.delete("/delete/:employe_id",(req,res)=>{
+    const employe_id=req.params.employe_id
+    db.query('DELETE FROM employe WHERE employe_id=?' ,employe_id,
+        (err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.send(result)
+            }
+        });
+});
+
 app.listen(3001,()=>{
     console.log("Corriendo")
 })
